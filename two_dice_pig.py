@@ -33,13 +33,13 @@ def greet_user() -> None:
     print(f"\n\nWelcome to Two-Dice Pig Match!")
 
 
-def print_name(p1, p2) -> None:
+def print_names(p1, p2) -> None:
     """Displays the name of the player and opponent."""
     print(f"\nYour Name: {p1}\n{'-' * 23}")
     print(f"Opponent's Name: {p2}\n")
 
 
-def get_name() -> str:
+def get_player_names() -> str:
     """Asks the user to enter their name and generates a random
     name if the user do not wish to give player 2 a name.
 
@@ -55,24 +55,22 @@ def get_name() -> str:
 
         if not player_name:
             print("\nPlayer Name Required!")
-        else:
-            break
+        break
 
     if ask_user_yes_no("\nWould you like to give the AI a name? (Y/N): "):
         while True:
             ai_name = input("\nEnter AI's name: ")
             if not ai_name:
                 print("\nAI Name Required!")
-            else:
-                break
+            break
     else:
         print("\n\nA random name has been generated for the AI.")
-        rand_name = "AI-" + names.get_first_name()
+        rand_name = f"AI-{names.get_first_name()}"
         three_digits = "".join(map(str, sample(range(10, 1000), 2)))
         ai_name = rand_name + three_digits[:3]
 
     greet_user()
-    print_name(player_name, ai_name)
+    print_names(player_name, ai_name)
 
     return player_name, ai_name
 
@@ -95,7 +93,7 @@ class TwoDicePig:
     """
 
     def __init__(self, p1_human: bool = True, p2_human: bool = False) -> None:
-        self.player_1_name, self.player_2_name = get_name()
+        self.player_1_name, self.player_2_name = get_player_names()
         self.dice = Dice()
         self.player_1 = Player(f"{self.player_1_name}", p1_human)
         self.player_2 = Player(f"{self.player_2_name}", p2_human)
