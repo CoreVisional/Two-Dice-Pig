@@ -108,9 +108,9 @@ class TwoDicePig:
         Calls print_winner method when a player scored over 100.
 
         """
-        while (self.player_1.total_score < 10 and self.player_2.total_score < 10):
+        while (self.player_1.total_score < 100 and self.player_2.total_score < 100):
             self.player_1.turns()
-            if self.player_2.total_score < 10:
+            if self.player_2.total_score < 100:
                 self.player_2.turns()
         self.print_winner()
 
@@ -297,23 +297,33 @@ class Player():
             f"\n\033[1m({self.name}) Total Score: {self.total_score}\033[0m\n\n{'=' * 30}\n")
 
 
-def should_play_again():
+def should_play_again() -> bool:
     """Asks the user if they want to play again.
 
-    Restarts program if True, else prints a message
-    telling the user that the program has exited.
+    Returns:
+        True if the user wants to play 
+        again, False otherwise.
 
     """
-    if ask_user_yes_no("\n\nWould you like to Two-Dice Pig again? (Y/N): "):
-        return main()
-    else:
-        print("\n\n-----Program Exited-----\n\n")
+    return ask_user_yes_no("\n\nWould you like to play "
+                           "Two-Dice Pig again? (Y/N): ")
 
 
 def main():
-    play_game = TwoDicePig()
-    play_game.play()
-    should_play_again()
+    """Starts the program.
+
+    Restarts program if should_play_again function returns True, prints a 
+    message telling the user that the program has exited otherwise.
+
+    """
+    while True:
+        play_game = TwoDicePig()
+        play_game.play()
+
+        if not should_play_again():
+            break
+
+    print("\n\n-----Program Exited-----\n\n")
 
 
 if __name__ == "__main__":
