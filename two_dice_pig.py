@@ -3,6 +3,8 @@ import names
 
 from random import sample
 
+from typing import Union
+
 
 def ask_user_yes_no(yes_no_question) -> bool:
     """Simplifies if/else to determine the correct answers from the user input.
@@ -34,7 +36,7 @@ def ask_user_yes_no(yes_no_question) -> bool:
 
 def greet_user() -> None:
     """Displays a greeting for the game Two-Dice Pig."""
-    print(f"\n\nWelcome to Two-Dice Pig Match!")
+    print("\n\nWelcome to Two-Dice Pig Match!")
 
 
 def print_names(p1, p2) -> None:
@@ -43,12 +45,13 @@ def print_names(p1, p2) -> None:
     print(f"Opponent's Name: {p2}\n")
 
 
-def get_player_names() -> str:
+def get_player_names() -> Union[tuple[str, str]]:
     """Asks the user to enter their name and generates a random
     name if the user do not wish to give player 2 a name.
 
     Returns:
-        A string of both player 1 and player 2's names.
+        A tuple of string containing the names
+        of both player 1 and player 2.
 
     This is repeated until the user has provided a 
     name and an AI name to the program.
@@ -186,15 +189,15 @@ class Player():
         self.total_score = 0
         self.dice = Dice()
 
-    def get_dice_min_max(self) -> int:
+    def get_dice_min_max(self) -> Union[tuple[int, int]]:
         """Finds the minimum and maximum numbers of the dice.
 
         Calls an instance method, roll(), to get the minimum 
         and maximum values of the dice.
 
         Returns:
-            die_1 (int): An integer of the lowest value in the list.
-            die_2 (int): An integer of the highest value in the list.
+            A tuple of integers containing the lowest and highest
+            values of the dice.
 
         """
         self.dice.roll()
