@@ -108,18 +108,32 @@ class TwoDicePig:
         Calls print_winner method when a player scored over 100.
 
         """
-        while (self.player_1.total_score < 100 and self.player_2.total_score < 100):
+        while (self.player_1.total_score < 10 and self.player_2.total_score < 10):
             self.player_1.turns()
-            if self.player_2.total_score < 100:
+            if self.player_2.total_score < 10:
                 self.player_2.turns()
         self.print_winner()
 
     def print_winner(self) -> None:
         """Prints out the winner."""
         if (self.player_1.total_score > self.player_2.total_score):
-            print(f"\n{self.player_1_name} wins!")
+            print(
+                f"\n\033[1m{self.player_1_name.upper() + ' WINS!':^30}\033[0m")
         else:
-            print(f"\n{self.player_2_name} wins!")
+            print(
+                f"\n\033[1m{self.player_2_name.upper() + ' WINS!':^30}\033[0m")
+
+        self.print_result()
+
+    def print_result(self) -> None:
+        """Prints out the names of the players and the total points scored
+        by each player.
+
+        """
+        p1_final_points = f"{self.player_1_name}: {self.player_1.total_score}"
+        p2_final_points = f"{self.player_2_name}: {self.player_2.total_score}"
+
+        print(f"\n\n {p1_final_points} Points | {p2_final_points} Points")
 
 
 class Dice:
@@ -241,7 +255,7 @@ class Player():
         self.total_score += player_score
         print(f"\n\n{self.name}'s turn ends.")
         print(
-            f"\n\033[1m({self.name}) Total Score: {self.total_score}\033[0m\n\n{'=' * 30}")
+            f"\n\033[1m({self.name}) Total Score: {self.total_score}\033[0m\n\n{'=' * 30}\n")
 
     def computer_turn(self):
         """Totals up the computer's score and prints out the 
@@ -280,7 +294,7 @@ class Player():
         print(f"\n{self.name}'s turn ends.")
         print(f"\n{self.name} scored {computer_score} in this round.")
         print(
-            f"\n\033[1m({self.name}) Total Score: {self.total_score}\033[0m\n\n{'=' * 30}")
+            f"\n\033[1m({self.name}) Total Score: {self.total_score}\033[0m\n\n{'=' * 30}\n")
 
 
 def should_play_again():
