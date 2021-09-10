@@ -5,13 +5,17 @@ from random import sample
 
 
 def ask_user_yes_no(yes_no_question) -> bool:
-    """Simplifies if/else in determining the correct 
-    answers from the user input.
+    """Simplifies if/else to determine the correct answers from the user input.
 
-    Returns True if the user answer the prompt with
-    any of the values in choice_yes.
+    Args:
+        yes_no_question: A string that asks user a yes or no question.
 
-    Returns False if the user enters any of the values in choice_no.
+    Returns:
+        True if the user's answer is in CHOICE_YES,
+        and False otherwise.
+
+        Prints a message to the user if their input are not similar
+        to the ones in CHOICE_YES and CHOICE_NO.
 
     """
     CHOICE_YES = ("yes", 'y')
@@ -35,7 +39,7 @@ def greet_user() -> None:
 
 def print_names(p1, p2) -> None:
     """Displays the name of the player and opponent."""
-    print(f"\nYour Name: {p1}\n{'-' * 23}")
+    print(f"\n\nYour Name: {p1}\n{'-' * 23}")
     print(f"Opponent's Name: {p2}\n")
 
 
@@ -136,7 +140,7 @@ class Dice:
         self.faces = sample(range(1, self.sides), 2)
 
 
-class Player:
+class Player():
     """Sets up the turns for player 1 and player 2,
     and get the total score once a round is over.
 
@@ -152,6 +156,9 @@ class Player:
         is_human (bool): True if it is the actual player's turn, False otherwise.
                          Defaults to False.
 
+        total_round (int): The total round taken to win the game. Increments by 1
+                           after the end of each player's turn.
+
         total_score (int): The total score of the players after the end of a round.
 
         dice (Dice): An instance of Dice class.
@@ -161,6 +168,7 @@ class Player:
     def __init__(self, players_name: str, human_player: bool = False) -> None:
         self.name = players_name
         self.is_human = human_player
+        self.total_round = 0
         self.total_score = 0
         self.dice = Dice()
 
@@ -196,17 +204,23 @@ class Player:
 
         """
         player_score = 0
+        self.total_round += 1
 
         # Continues the game if the player chooses to roll the
         # dice again, ends the round otherwise.
         while True:
+            print("{:^20}\033[1mROUND: {}\033[0m\n".format(
+                '\n' * 3, self.total_round))
+
+            print(f"({self.name})".center(25))
+
             roll_1, roll_2 = self.get_dice_min_max()
 
             if roll_1 == 1 or roll_2 == 1:
                 print(f"\n\n{self.name} rolled a 1.")
                 break
             elif roll_1 == 1 and roll_2 == 1:
-                print(f"\n{self.name} rolled two 1s and lost all the scores.")
+                print(f"\n\n{self.name} rolled two 1s and lost all the scores.")
                 player_score = 0
                 break
             else:
@@ -219,12 +233,15 @@ class Player:
                     print(
                         f"\n{self.name} scored \033[1m{player_score} points\033[0m in this round.\n\n{'-' * 23}")
 
-            if not ask_user_yes_no("\nRoll again? (Y/N): "):
+            if ask_user_yes_no("\nRoll again? (Y/N): "):
+                self.total_round += 1
+            else:
                 break
 
         self.total_score += player_score
-        print(f"\n{self.name}'s turn ends.")
-        print(f"\n({self.name}) Total Score: {self.total_score}\n\n{'-' * 23}")
+        print(f"\n\n{self.name}'s turn ends.")
+        print(
+            f"\n\033[1m({self.name}) Total Score: {self.total_score}\033[0m\n\n{'=' * 30}")
 
     def computer_turn(self):
         """Totals up the computer's score and prints out the 
@@ -232,6 +249,12 @@ class Player:
 
         """
         computer_score = 0
+        self.total_round += 1
+
+        print("{:^20}\033[1mROUND: {}\033[0m\n".format(
+            '\n' * 3, self.total_round))
+
+        print(f"({self.name})".center(25))
 
         # Let the AI rolls the dice again if its score is lesser
         # than 20, ends its turns otherwise.
@@ -239,24 +262,25 @@ class Player:
             roll_1, roll_2 = self.get_dice_min_max()
 
             if roll_1 == 1 or roll_2 == 1:
-                print(f"\n{self.name} rolled a 1.")
+                print(f"\n\n{self.name} rolled a 1.")
                 break
             elif roll_1 == 1 and roll_2 == 1:
-                print(f"\n{self.name} rolled two 1s and lost all the scores.")
+                print(f"\n\n{self.name} rolled two 1s and lost all the scores.")
                 computer_score = 0
                 break
             else:
-                print(f"\n{self.name} rolled a {roll_1} and {roll_2}.")
+                print(f"\n\n{self.name} rolled a {roll_1} and {roll_2}.")
                 computer_score += sum([roll_1, roll_2])
                 if computer_score < 20:
-                    print(f"\n{self.name} will roll the dice again.\n\n")
+                    print(f"\n{self.name} will roll the dice again.\n")
                 else:
                     break
 
         self.total_score += computer_score
         print(f"\n{self.name}'s turn ends.")
         print(f"\n{self.name} scored {computer_score} in this round.")
-        print(f"\n({self.name}) Total Score: {self.total_score}\n\n{'-' * 23}")
+        print(
+            f"\n\033[1m({self.name}) Total Score: {self.total_score}\033[0m\n\n{'=' * 30}")
 
 
 def should_play_again():
