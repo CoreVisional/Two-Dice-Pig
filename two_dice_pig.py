@@ -62,14 +62,16 @@ def get_player_names() -> Union[tuple[str, str]]:
 
         if not player_name:
             print("\nPlayer Name Required!")
-        break
+        else:
+            break
 
     if ask_user_yes_no("\nWould you like to give the AI a name? (Y/N): "):
         while True:
             ai_name = input("\nEnter AI's name: ")
             if not ai_name:
                 print("\nAI Name Required!")
-            break
+            else:
+                break
     else:
         print("\n\nA random name has been generated for the AI.")
         rand_name = f"AI-{names.get_first_name()}"
