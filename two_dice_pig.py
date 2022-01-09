@@ -140,7 +140,7 @@ class TwoDicePig:
         print(f"\n\n {p1_final_points} Points | {p2_final_points} Points")
 
 
-class Player():
+class Player:
     """Set up the turns and get total score after each round.
 
     Args:
